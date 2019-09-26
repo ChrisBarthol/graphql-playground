@@ -4,13 +4,8 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var express = _interopDefault(require('express'));
 var expressGraphQL = _interopDefault(require('express-graphql'));
-var _ = _interopDefault(require('lodash'));
+var axios = _interopDefault(require('axios'));
 var graphql = require('graphql');
-
-const users = [
-  { id: '23', firstName: 'Bill', lastName: 'Fun', age: 20 },
-  { id: '47', firstName: 'Jill', lastName: 'Fun', age: 22 },
-];
 
 const UserType = new graphql.GraphQLObjectType({
   name: 'User',
@@ -29,7 +24,8 @@ const RootQuery = new graphql.GraphQLObjectType({
       type: UserType,
       args: { id: { type: graphql.GraphQLString } },
       resolve(parentValue, args) {
-        return _.find(users, { id: args.id })
+        return axios.get(`http://localhost:6000/users/${args.id}`)
+          .then(resp => resp.data)
       }
     }
   }
