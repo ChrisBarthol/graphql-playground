@@ -7,13 +7,29 @@ var expressGraphQL = _interopDefault(require('express-graphql'));
 var axios = _interopDefault(require('axios'));
 var graphql = require('graphql');
 
+const CompanyType = new graphql.GraphQLObjectType({
+  name: "Company",
+  fields: {
+    id: { type: graphql.GraphQLString },
+    name: { type: graphql.GraphQLString },
+    description: { type: graphql.GraphQLString }
+  }
+});
+
 const UserType = new graphql.GraphQLObjectType({
   name: 'User',
   fields: {
     id: { type: graphql.GraphQLString },
     firstName: { type: graphql.GraphQLString },
     lastName: { type: graphql.GraphQLString },
-    age: { type: graphql.GraphQLInt }
+    age: { type: graphql.GraphQLInt },
+    company: { 
+      type: CompanyType,
+      resolve(parentValue, args){
+        return axios.get(`http://localhost:6000/companies/${parentValue.companyId}`)
+          .then(resp => resp.data)
+      }
+    }
   }
 });
 

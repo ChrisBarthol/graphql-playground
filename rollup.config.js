@@ -13,6 +13,6 @@ export default {
   external: external,
   plugins: [
     resolve(),
-    commonjs(),
+    commonjs()
   ]
 }

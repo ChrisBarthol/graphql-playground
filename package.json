@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rollup -c",
-    "watch": "rollup -c rollup.config.js --watch",
+    "watch": "nodemon ./dist/server.js localhost 4000",
     "server": "node dist/server.js",
     "json:server": "json-server --watch db.json"
   },
@@ -21,6 +21,7 @@
     "lodash": "^4.17.15"
   },
   "devDependencies": {
+    "nodemon": "^1.19.2",
     "rollup": "^1.20.3",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0"
