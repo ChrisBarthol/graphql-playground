@@ -43,6 +43,14 @@ const RootQuery = new graphql.GraphQLObjectType({
         return axios.get(`http://localhost:6000/users/${args.id}`)
           .then(resp => resp.data)
       }
+    },
+    company: {
+      type: CompanyType,
+      args: { id: { type: graphql.GraphQLString } },
+      resolve(parentValue, args) {
+        return axios.get(`http://localhost:6000/companies/${args.id}`)
+          .then(resp => resp.data)
+      }
     }
   }
 });
@@ -58,6 +66,4 @@ app.use('/graphql', expressGraphQL({
   graphiql: true
 }));
 
-app.listen(4000, () => {
-  console.log(schema);
-});
+app.listen(4000, () => {});

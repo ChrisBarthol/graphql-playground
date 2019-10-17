@@ -7,8 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rollup -c",
     "watch": "nodemon ./dist/server.js localhost 4000",
+    "rollup-watch": "rollup -c --watch",
     "server": "node dist/server.js",
-    "json:server": "json-server --watch db.json"
+    "json:server": "json-server --watch db.json --port 6000"
   },
   "author": "",
   "license": "ISC",
