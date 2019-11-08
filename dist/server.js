@@ -7,18 +7,9 @@ var expressGraphQL = _interopDefault(require('express-graphql'));
 var axios = _interopDefault(require('axios'));
 var graphql = require('graphql');
 
-const CompanyType = new graphql.GraphQLObjectType({
-  name: "Company",
-  fields: {
-    id: { type: graphql.GraphQLString },
-    name: { type: graphql.GraphQLString },
-    description: { type: graphql.GraphQLString }
-  }
-});
-
 const UserType = new graphql.GraphQLObjectType({
   name: 'User',
-  fields: {
+  fields: () => ({
     id: { type: graphql.GraphQLString },
     firstName: { type: graphql.GraphQLString },
     lastName: { type: graphql.GraphQLString },
@@ -30,7 +21,22 @@ const UserType = new graphql.GraphQLObjectType({
           .then(resp => resp.data)
       }
     }
-  }
+  })
+});
+
+const CompanyType = new graphql.GraphQLObjectType({
+  name: "Company",
+  fields: () => ({
+    id: { type: graphql.GraphQLString },
+    name: { type: graphql.GraphQLString },
+    description: { type: graphql.GraphQLString },
+    users: {
+      type: new graphql.GraphQLList(UserType),
+      resolve(parentValue, args){
+        return axios.get(`http://localhost:6000/companies/${parentValue.id}/users`)
+          .then(resp => resp.data)      }
+    }
+  })
 });
 
 const RootQuery = new graphql.GraphQLObjectType({
@@ -54,6 +60,23 @@ const RootQuery = new graphql.GraphQLObjectType({
     }
   }
 });
+
+// const Mutuation = new GraphQLObjectType({
+//   name: 'Mutation',
+//   fields: {
+//     addUser: {
+//       type: UserType,
+//       args: {
+//         firstName: { type: GraphQLString },
+//         age: { type: GraphQLInt },
+//         commanyId: { type: GraphQLString }
+//       },
+//       resolve() {
+
+//       }
+//     }
+//   }
+// })
 
 var schema = new graphql.GraphQLSchema({
   query: RootQuery
