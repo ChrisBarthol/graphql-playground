@@ -4,7 +4,8 @@ import {
   GraphQLString,
   GraphQLInt,
   GraphQLSchema,
-  GraphQLList
+  GraphQLList,
+  GraphQLNonNull
 } from 'graphql'
 
 import CompanyType from '../types/company'
@@ -32,23 +33,48 @@ const RootQuery = new GraphQLObjectType({
   }
 })
 
-// const Mutuation = new GraphQLObjectType({
-//   name: 'Mutation',
-//   fields: {
-//     addUser: {
-//       type: UserType,
-//       args: {
-//         firstName: { type: GraphQLString },
-//         age: { type: GraphQLInt },
-//         commanyId: { type: GraphQLString }
-//       },
-//       resolve() {
-
-//       }
-//     }
-//   }
-// })
+const Mutuation = new GraphQLObjectType({
+  name: 'Mutation',
+  fields: {
+    addUser: {
+      type: UserType,
+      args: {
+        firstName: { type: new GraphQLNonNull(GraphQLString) },
+        age: { type: new GraphQLNonNull(GraphQLInt) },
+        commanyId: { type: GraphQLString }
+      },
+      resolve(parentValue, { firstName, age }) {
+        return axios.post('http://localhost:6000/users', { firstName, age })
+          .then(resp => resp.data)
+      }
+    },
+    deleteUser: {
+      type: UserType,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve(parentValue, { id }) {
+        return axios.delete(`http://localhost:6000/users/${id}`, )
+          .then(resp => resp.data)
+      }    
+    },
+    updateUser: {
+      type: UserType,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLString) },
+        firstName: { type: GraphQLString },
+        age: { type: GraphQLInt },
+        commanyId: { type: GraphQLString }
+      },
+      resolve(parentValue, args ) {
+        return axios.patch(`http://localhost:6000/users/${args.id}`, args )
+          .then(resp => resp.data)
+      }    
+    }
+  }
+})
 
 export default new GraphQLSchema({
-  query: RootQuery
+  query: RootQuery,
+  mutation: Mutuation
 })

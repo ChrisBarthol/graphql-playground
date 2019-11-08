@@ -1,11 +1,37 @@
 {
   "users": [
-    { "id": "23", "firstName": "Bill", "lastName": "Fun", "age": 20, "companyId": "1" },
-    { "id": "47", "firstName": "Jill", "lastName": "Fun", "age": 22, "companyId": "2" },
-    { "id": "41", "firstName": "Janet", "lastName": "Bartnick", "age": 22, "companyId": "2" }
+    {
+      "id": "23",
+      "firstName": "wef",
+      "lastName": "Fun",
+      "age": 20,
+      "companyId": "1",
+    },
+    {
+      "id": "47",
+      "firstName": "Jill",
+      "lastName": "Fun",
+      "age": 22,
+      "companyId": "2"
+    },
+    {
+      "id": "41",
+      "firstName": "Janet",
+      "lastName": "Bartnick",
+      "age": 22,
+      "companyId": "2"
+    }
   ],
   "companies": [
-    {"id": "1", "name": "Beam Dental", "description": "dental insurance" },
-    {"id": "2", "name": "Root Insurance", "description": "car insurance" }
+    {
+      "id": "1",
+      "name": "Beam Dental",
+      "description": "dental insurance"
+    },
+    {
+      "id": "2",
+      "name": "Root Insurance",
+      "description": "car insurance"
+    }
   ]
 }

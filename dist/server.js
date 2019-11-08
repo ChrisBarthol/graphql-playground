@@ -61,25 +61,50 @@ const RootQuery = new graphql.GraphQLObjectType({
   }
 });
 
-// const Mutuation = new GraphQLObjectType({
-//   name: 'Mutation',
-//   fields: {
-//     addUser: {
-//       type: UserType,
-//       args: {
-//         firstName: { type: GraphQLString },
-//         age: { type: GraphQLInt },
-//         commanyId: { type: GraphQLString }
-//       },
-//       resolve() {
-
-//       }
-//     }
-//   }
-// })
+const Mutuation = new graphql.GraphQLObjectType({
+  name: 'Mutation',
+  fields: {
+    addUser: {
+      type: UserType,
+      args: {
+        firstName: { type: new graphql.GraphQLNonNull(graphql.GraphQLString) },
+        age: { type: new graphql.GraphQLNonNull(graphql.GraphQLInt) },
+        commanyId: { type: graphql.GraphQLString }
+      },
+      resolve(parentValue, { firstName, age }) {
+        return axios.post('http://localhost:6000/users', { firstName, age })
+          .then(resp => resp.data)
+      }
+    },
+    deleteUser: {
+      type: UserType,
+      args: {
+        id: { type: new graphql.GraphQLNonNull(graphql.GraphQLString) },
+      },
+      resolve(parentValue, { id }) {
+        return axios.delete(`http://localhost:6000/users/${id}`, )
+          .then(resp => resp.data)
+      }    
+    },
+    updateUser: {
+      type: UserType,
+      args: {
+        id: { type: new graphql.GraphQLNonNull(graphql.GraphQLString) },
+        firstName: { type: graphql.GraphQLString },
+        age: { type: graphql.GraphQLInt },
+        commanyId: { type: graphql.GraphQLString }
+      },
+      resolve(parentValue, args ) {
+        return axios.patch(`http://localhost:6000/users/${args.id}`, args )
+          .then(resp => resp.data)
+      }    
+    }
+  }
+});
 
 var schema = new graphql.GraphQLSchema({
-  query: RootQuery
+  query: RootQuery,
+  mutation: Mutuation
 });
 
 const app = express();
